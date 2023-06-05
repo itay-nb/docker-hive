@@ -1,0 +1,58 @@
+# ungrouped / non-local execution
+root@8fd4acdb4022:/opt/presto-server-0.181# ./presto.jar --server localhost:8080 --catalog hive --schema default
+presto:default> explain select * from pokes, dim where pokes.foo=dim.foo;
+ERROR: failed to open pager: Cannot run program "less": error=2, No such file or directory
+                                                                                 Query Plan
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+ - Output[foo, bar, prefix, foo, bar, prefix] => [foo:integer, bar:varchar, prefix:varchar, foo:integer, bar_1:varchar, prefix_2:varchar]
+         Cost: {rows: 1000, bytes: ?}
+         bar := bar_1
+         prefix := prefix_2
+     - RemoteExchange[GATHER] => foo:integer, bar:varchar, prefix:varchar, bar_1:varchar, prefix_2:varchar
+             Cost: {rows: 1000, bytes: ?}
+         - InnerJoin[("foo" = "foo_0")][$hashvalue, $hashvalue_28] => [foo:integer, bar:varchar, prefix:varchar, bar_1:varchar, prefix_2:varchar]
+                 Cost: {rows: 1000, bytes: ?}
+             - ScanProject[table = hive:hive:default:pokes, originalConstraint = true] => [foo:integer, bar:varchar, prefix:varchar, $hashvalue:bigint]
+                     Cost: {rows: 500, bytes: ?}/{rows: 500, bytes: ?}
+                     $hashvalue := "combine_hash"(BIGINT '0', COALESCE("$operator$hash_code"("foo"), 0))
+                     LAYOUT: hive
+                     foo := HiveColumnHandle{clientId=hive, name=foo, hiveType=int, hiveColumnIndex=0, columnType=REGULAR, comment=Optional.empty}
+                     bar := HiveColumnHandle{clientId=hive, name=bar, hiveType=string, hiveColumnIndex=1, columnType=REGULAR, comment=Optional.empty}
+                     prefix := HiveColumnHandle{clientId=hive, name=prefix, hiveType=string, hiveColumnIndex=-1, columnType=PARTITION_KEY, comment=Optional.empty}
+                         :: [[val_0], [val_1], [val_2], [val_3], [val_4], [val_5], [val_6], [val_7], [val_8], [val_9]]
+             - LocalExchange[HASH][$hashvalue_28] ("foo_0") => foo_0:integer, bar_1:varchar, prefix_2:varchar, $hashvalue_28:bigint
+                     Cost: {rows: 5, bytes: ?}
+                 - RemoteExchange[REPARTITION] => foo_0:integer, bar_1:varchar, prefix_2:varchar, $hashvalue_29:bigint
+                         Cost: {rows: 5, bytes: ?}
+                     - ScanProject[table = hive:hive:default:dim, originalConstraint = true] => [foo_0:integer, bar_1:varchar, prefix_2:varchar, $hashvalue_30:bigint]
+                             Cost: {rows: 5, bytes: ?}/{rows: 5, bytes: ?}
+                             $hashvalue_30 := "combine_hash"(BIGINT '0', COALESCE("$operator$hash_code"("foo_0"), 0))
+                             LAYOUT: hive
+                             foo_0 := HiveColumnHandle{clientId=hive, name=foo, hiveType=int, hiveColumnIndex=0, columnType=REGULAR, comment=Optional.empty}
+                             bar_1 := HiveColumnHandle{clientId=hive, name=bar, hiveType=string, hiveColumnIndex=1, columnType=REGULAR, comment=Optional.empty}
+                             prefix_2 := HiveColumnHandle{clientId=hive, name=prefix, hiveType=string, hiveColumnIndex=-1, columnType=PARTITION_KEY, comment=Optional.empty}
+                                 :: [[val_0], [val_1], [val_3]]
+
+(1 row)
+
+Query 20230601_153639_00020_kyq3w, FINISHED, 1 node
+Splits: 1 total, 1 done (100.00%)
+0:01 [0 rows, 0B] [0 rows/s, 0B/s]
+
+presto:default> select * from pokes, dim where pokes.foo=dim.foo;
+ERROR: failed to open pager: Cannot run program "less": error=2, No such file or directory
+ foo |   bar   | prefix | foo |   bar   | prefix
+-----+---------+--------+-----+---------+--------
+ 172 | val_172 | val_1  | 172 | val_172 | val_1
+ 172 | val_172 | val_1  | 172 | val_172 | val_1
+ 103 | val_103 | val_1  | 103 | val_103 | val_1
+ 103 | val_103 | val_1  | 103 | val_103 | val_1
+   0 | val_0   | val_0  |   0 | val_0   | val_0
+   0 | val_0   | val_0  |   0 | val_0   | val_0
+   0 | val_0   | val_0  |   0 | val_0   | val_0
+ 169 | val_169 | val_1  | 169 | val_169 | val_1
+ 169 | val_169 | val_1  | 169 | val_169 | val_1
+ 169 | val_169 | val_1  | 169 | val_169 | val_1
+ 169 | val_169 | val_1  | 169 | val_169 | val_1
+ 374 | val_374 | val_3  | 374 | val_374 | val_3
+(12 rows)

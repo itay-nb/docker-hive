@@ -1,0 +1,117 @@
+# docker-compose exec presto-coordinator bash
+
+# demonstrate colocated-join
+
+docker-compose exec presto-coordinator bash -c \
+'presto --catalog hive --schema default --execute \
+"explain select * from pokes, dim where pokes.foo=dim.foo;"'
+
+"Output[foo, bar, prefix, foo, bar, prefix]
+│   Layout: [foo:integer, bar:varchar, prefix:varchar, foo:integer, bar_1:varchar, prefix_2:varchar]
+│   Estimates: {rows: ? (?), cpu: ?, memory: 395B, network: ?}
+│   bar := bar_1
+│   prefix := prefix_2
+└─ RemoteExchange[GATHER]
+   │   Layout: [bar:varchar, prefix:varchar, foo:integer, bar_1:varchar, prefix_2:varchar]
+   │   Estimates: {rows: ? (?), cpu: ?, memory: 395B, network: ?}
+   └─ InnerJoin[(""foo"" = ""foo_0"")][$hashvalue, $hashvalue_30]
+      │   Layout: [foo:integer, bar:varchar, prefix:varchar, bar_1:varchar, prefix_2:varchar]
+      │   Estimates: {rows: ? (?), cpu: ?, memory: 395B, network: 395B}
+      │   Distribution: PARTITIONED
+      ├─ ScanProject[table = hive:default:pokes bucket=32]
+      │      Layout: [foo:integer, bar:varchar, prefix:varchar, $hashvalue:bigint]
+      │      Estimates: {rows: 500 (38.57kB), cpu: 34.18k, memory: 0B, network: 0B}/{rows: 500 (38.57kB), cpu: 72.75k, memory: 0B, network: 0B}
+      │      $hashvalue := combine_hash(bigint '0', COALESCE(""$operator$hash_code""(""foo""), 0))
+      │      bar := bar:string:1:REGULAR
+      │      prefix := prefix:string:-1:PARTITION_KEY
+      │          :: [[val_0], [val_1], [val_2], [val_3], [val_4], [val_5], [val_6], [val_7], [val_8], [val_9]]
+      │      foo := foo:int:0:REGULAR
+      └─ LocalExchange[HASH][$hashvalue_30] (""foo_0"")
+         │   Layout: [foo_0:integer, bar_1:varchar, prefix_2:varchar, $hashvalue_30:bigint]
+         │   Estimates: {rows: 5 (395B), cpu: 1.50k, memory: 0B, network: 395B}
+         └─ RemoteExchange[REPARTITION]
+            │   Layout: [foo_0:integer, bar_1:varchar, prefix_2:varchar, $hashvalue_31:bigint]
+            │   Estimates: {rows: 5 (395B), cpu: 1.11k, memory: 0B, network: 395B}
+            └─ ScanProject[table = hive:default:dim bucket=32]
+                   Layout: [foo_0:integer, bar_1:varchar, prefix_2:varchar, $hashvalue_32:bigint]
+                   Estimates: {rows: 5 (395B), cpu: 350, memory: 0B, network: 0B}/{rows: 5 (395B), cpu: 745, memory: 0B, network: 0B}
+                   $hashvalue_32 := combine_hash(bigint '0', COALESCE(""$operator$hash_code""(""foo_0""), 0))
+                   foo_0 := foo:int:0:REGULAR
+                   bar_1 := bar:string:1:REGULAR
+                   prefix_2 := prefix:string:-1:PARTITION_KEY
+                       :: [[val_0], [val_1], [val_3]]
+"
+
+
+# make sure the following configs are enabled in the coordinator's etc/config.properties:
+#  colocated-joins-enabled=true
+#  grouped-execution-enabled=true
+echo -e "colocated-joins-enabled=true\\ngrouped-execution-enabled=true" >> prestodb/coordinator/etc/config.properties
+docker-compose stop presto-coordinator
+docker-compose rm presto-coordinator
+docker-compose up -d presto-coordinator
+
+show session;
+set session colocated-joins-enabled=true;
+
+
+"Output[foo, bar, prefix, foo, bar, prefix]
+│   Layout: [foo:integer, bar:varchar, prefix:varchar, foo:integer, bar_1:varchar, prefix_2:varchar]
+│   Estimates: {rows: ? (?), cpu: ?, memory: 395B, network: ?}
+│   bar := bar_1
+│   prefix := prefix_2
+└─ RemoteExchange[GATHER]
+   │   Layout: [bar:varchar, prefix:varchar, foo:integer, bar_1:varchar, prefix_2:varchar]
+   │   Estimates: {rows: ? (?), cpu: ?, memory: 395B, network: ?}
+   └─ InnerJoin[(""foo"" = ""foo_0"")][$hashvalue, $hashvalue_30]
+      │   Layout: [foo:integer, bar:varchar, prefix:varchar, bar_1:varchar, prefix_2:varchar]
+      │   Estimates: {rows: ? (?), cpu: ?, memory: 395B, network: 0B}
+      │   Distribution: PARTITIONED
+      ├─ ScanProject[table = hive:default:pokes bucket=32]
+      │      Layout: [foo:integer, bar:varchar, prefix:varchar, $hashvalue:bigint]
+      │      Estimates: {rows: 500 (38.57kB), cpu: 34.18k, memory: 0B, network: 0B}/{rows: 500 (38.57kB), cpu: 72.75k, memory: 0B, network: 0B}
+      │      $hashvalue := combine_hash(bigint '0', COALESCE(""$operator$hash_code""(""foo""), 0))
+      │      bar := bar:string:1:REGULAR
+      │      prefix := prefix:string:-1:PARTITION_KEY
+      │          :: [[val_0], [val_1], [val_2], [val_3], [val_4], [val_5], [val_6], [val_7], [val_8], [val_9]]
+      │      foo := foo:int:0:REGULAR
+      └─ LocalExchange[HASH][$hashvalue_30] (""foo_0"")
+         │   Layout: [foo_0:integer, bar_1:varchar, prefix_2:varchar, $hashvalue_30:bigint]
+         │   Estimates: {rows: 5 (395B), cpu: 1.11k, memory: 0B, network: 0B}
+         └─ ScanProject[table = hive:default:dim bucket=32]
+                Layout: [foo_0:integer, bar_1:varchar, prefix_2:varchar, $hashvalue_31:bigint]
+                Estimates: {rows: 5 (395B), cpu: 350, memory: 0B, network: 0B}/{rows: 5 (395B), cpu: 745, memory: 0B, network: 0B}
+                $hashvalue_31 := combine_hash(bigint '0', COALESCE(""$operator$hash_code""(""foo_0""), 0))
+                foo_0 := foo:int:0:REGULAR
+                bar_1 := bar:string:1:REGULAR
+                prefix_2 := prefix:string:-1:PARTITION_KEY
+                    :: [[val_0], [val_1], [val_3]]
+"
+
+
+# tpc-h query (not over hive)
+docker-compose exec presto-coordinator \
+  presto --catalog tpch --schema sf1 --execute  \
+  "-- TPC-H Query 5
+  select nation.name,  sum(lineitem.extendedprice * (1 - lineitem.discount)) as revenue 
+  from  customer,  orders,  lineitem,  supplier,  nation,  region 
+  where  customer.custkey = orders.custkey 
+    and lineitem.orderkey = orders.orderkey 
+    and lineitem.suppkey = supplier.suppkey 
+    and customer.nationkey = supplier.nationkey 
+    and supplier.nationkey = nation.nationkey 
+    and nation.regionkey = region.regionkey 
+    and region.name = 'ASIA' 
+    and orders.orderdate >= date '1994-01-01' 
+    and orders.orderdate < date '1994-01-01' + interval '1' year 
+  group by  nation.name 
+  order by  revenue desc;
+  "
+
+# restart
+/usr/lib/presto/bin/launcher restart
+
+# show logs
+/opt/presto-server-0.181/data/var/log/server.log
+
+

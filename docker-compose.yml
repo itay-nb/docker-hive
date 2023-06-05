@@ -42,9 +42,24 @@ services:
   hive-metastore-postgresql:
     image: bde2020/hive-metastore-postgresql:2.3.0
   presto-coordinator:
-    image: shawnzhu/prestodb:0.181
+    image: shawnzhu/prestodb:latest
     ports:
       - "8080:8080"
+    #entrypoint: ["sleep", "infinity"] # run '/usr/lib/presto/bin/launcher restart'
+    volumes:
+      - ./prestodb/coordinator/etc:/usr/lib/presto/etc
+  presto-worker0:
+    image: shawnzhu/prestodb:latest
+    ports:
+      - "8083:8083"
+    volumes:
+      - ./prestodb/worker0/etc/config.properties:/usr/lib/presto/default/etc/config.properties
+  presto-worker1:
+    image: shawnzhu/prestodb:latest
+    ports:
+      - "8084:8084"
+    volumes:
+      - ./prestodb/worker1/etc/config.properties:/usr/lib/presto/default/etc/config.properties
 
 volumes:
   namenode:

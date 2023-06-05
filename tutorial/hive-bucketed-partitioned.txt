@@ -1,0 +1,24 @@
+# docker-compose exec hive-server bash
+# /opt/hive/bin/beeline -u jdbc:hive2://localhost:10000
+
+SET hive.exec.dynamic.partition=true ;
+SET hive.exec.dynamic.partition.mode=non-strict;
+SET hive.enforce.bucketing=true;
+
+CREATE TABLE pokesunbucketed (foo INT, bar STRING);
+LOAD DATA LOCAL INPATH '/opt/hive/examples/files/kv1.txt' OVERWRITE INTO TABLE pokesunbucketed;
+CREATE TABLE pokes (foo INT, bar STRING) PARTITIONED BY (prefix string) CLUSTERED BY (foo) INTO 32 BUCKETS;
+insert into pokes PARTITION(prefix) select foo, bar, substring(bar, 1,5) AS prefix from pokesunbucketed;
+
+CREATE TABLE dimunbucketed (foo INT, bar STRING);
+LOAD DATA LOCAL INPATH '/opt/hive/examples/files/smallsrcsortbucket1outof4.txt' OVERWRITE INTO TABLE dimunbucketed;
+CREATE TABLE dim (foo INT, bar STRING) PARTITIONED BY (prefix string) CLUSTERED BY (foo) INTO 32 BUCKETS;
+insert into dim PARTITION(prefix) select foo, bar, substring(bar, 1,5) AS prefix from dimunbucketed;
+
+
+show partitions dim;
+show partitions pokes;
+
+
+hdfs dfs -ls /user/hive/warehouse/pokes/*
+hdfs dfs -ls /user/hive/warehouse/dim/*
