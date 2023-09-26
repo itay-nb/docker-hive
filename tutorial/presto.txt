@@ -4,6 +4,10 @@
 
 docker-compose exec presto-coordinator bash -c \
 'presto --catalog hive --schema default --execute \
+"select * from pokes, dim where pokes.foo=dim.foo;"'
+
+docker-compose exec presto-coordinator bash -c \
+'presto --catalog hive --schema default --execute \
 "explain select * from pokes, dim where pokes.foo=dim.foo;"'
 
 "Output[foo, bar, prefix, foo, bar, prefix]
@@ -52,7 +56,7 @@ docker-compose rm presto-coordinator
 docker-compose up -d presto-coordinator
 
 show session;
-set session colocated-joins-enabled=true;
+set session colocated-joins=true;
 
 
 "Output[foo, bar, prefix, foo, bar, prefix]
