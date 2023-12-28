@@ -5,6 +5,7 @@ services:
     image: bde2020/hadoop-namenode:2.0.0-hadoop2.7.4-java8
     volumes:
       - namenode:/hadoop/dfs/name
+      - /dataset:/dataset
     environment:
       - CLUSTER_NAME=test
     env_file:
@@ -15,6 +16,7 @@ services:
     image: bde2020/hadoop-datanode:2.0.0-hadoop2.7.4-java8
     volumes:
       - datanode:/hadoop/dfs/data
+      - /dataset:/dataset
     env_file:
       - ./hadoop-hive.env
     environment:
@@ -23,6 +25,8 @@ services:
       - "50075:50075"
   hive-server:
     image: bde2020/hive:2.3.2-postgresql-metastore
+    volumes:
+      - /dataset:/dataset
     env_file:
       - ./hadoop-hive.env
     environment:
@@ -32,6 +36,8 @@ services:
       - "10000:10000"
   hive-metastore:
     image: bde2020/hive:2.3.2-postgresql-metastore
+    volumes:
+      - /dataset:/dataset
     env_file:
       - ./hadoop-hive.env
     command: /opt/hive/bin/hive --service metastore
@@ -41,25 +47,30 @@ services:
       - "9083:9083"
   hive-metastore-postgresql:
     image: bde2020/hive-metastore-postgresql:2.3.0
+    volumes:
+      - /dataset:/dataset
   presto-coordinator:
     image: shawnzhu/prestodb:latest
     ports:
       - "8080:8080"
-    #entrypoint: ["sleep", "infinity"] # run '/usr/lib/presto/bin/launcher restart'
+    entrypoint: ["sleep", "infinity"] # run '/usr/lib/presto/bin/launcher restart'
     volumes:
       - ./prestodb/coordinator/etc:/usr/lib/presto/etc
+      - /dataset:/dataset
   presto-worker0:
     image: shawnzhu/prestodb:latest
     ports:
       - "8083:8083"
     volumes:
       - ./prestodb/worker0/etc:/usr/lib/presto/default/etc
+      - /dataset:/dataset
   presto-worker1:
     image: shawnzhu/prestodb:latest
     ports:
       - "8084:8084"
     volumes:
-      - ./prestodb/worker1/etc/config.properties:/usr/lib/presto/default/etc/config.properties
+      - ./prestodb/worker1/etc:/usr/lib/presto/default/etc
+      - /dataset:/dataset
 
 volumes:
   namenode:
