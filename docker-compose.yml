@@ -71,6 +71,27 @@ services:
     volumes:
       - ./prestodb/worker1/etc:/usr/lib/presto/default/etc
       - /dataset:/dataset
+  trino-coordinator:
+    image: trinodb/trino:latest
+    ports:
+      - "8090:8090"
+    volumes:
+      - ./trino/coordinator/:/etc/trino
+      - /dataset:/dataset
+  trino-worker0:
+    image: trinodb/trino:latest
+    ports:
+      - "8093:8093"
+    volumes:
+      - ./trino/worker0/:/etc/trino
+      - /dataset:/dataset
+  trino-worker1:
+    image: trinodb/trino:latest
+    ports:
+      - "8094:8094"
+    volumes:
+      - ./trino/worker0/:/etc/trino
+      - /dataset:/dataset
 
 volumes:
   namenode:
