@@ -50,26 +50,26 @@ services:
     volumes:
       - /dataset:/dataset
   presto-coordinator:
-    image: shawnzhu/prestodb:latest
+    image: prestodb/presto:0.286-edge8
     ports:
       - "8080:8080"
-    entrypoint: ["sleep", "infinity"] # run '/usr/lib/presto/bin/launcher restart'
+    #entrypoint: ["sleep", "infinity"] # run '/usr/lib/presto/bin/launcher restart'
     volumes:
-      - ./prestodb/coordinator/etc:/usr/lib/presto/etc
+      - ./prestodb/coordinator/etc:/opt/presto-server/etc
       - /dataset:/dataset
   presto-worker0:
-    image: shawnzhu/prestodb:latest
+    image: prestodb/presto:0.286-edge8
     ports:
       - "8083:8083"
     volumes:
-      - ./prestodb/worker0/etc:/usr/lib/presto/default/etc
+      - ./prestodb/worker0/etc:/opt/presto-server/etc
       - /dataset:/dataset
   presto-worker1:
-    image: shawnzhu/prestodb:latest
+    image: prestodb/presto:0.286-edge8
     ports:
       - "8084:8084"
     volumes:
-      - ./prestodb/worker1/etc:/usr/lib/presto/default/etc
+      - ./prestodb/worker1/etc:/opt/presto-server/etc
       - /dataset:/dataset
   trino-coordinator:
     image: trinodb/trino:latest
