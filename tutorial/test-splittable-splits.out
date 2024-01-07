@@ -1,110 +1,104 @@
-reportfilename: /tmp/test-splittable-splits.sh-BWE/report.xml
-tcpflow: listening on any
 presto:tpch1g> select * from lineitem where l_shipdate = '1998-01-23' and l_comment = 'itay';
-Query 20240101_210116_00038_yu9vj [FINISHING] i[0 51.5K 72.2K] o[0 51.5K 72.2K] splits[0/16/1] l_orderkey | l_partkey | l_suppkey | l_linenumber | l_quantity | l_extendedprice | l_discount | l_tax | l_returnflag | l_linestatus | l_commitdate | l_receiptdate | l_shipinstruct | l_shipmode | l_comment | l_shipdate 
+Query 20240107_222252_00017_qfbqi [FINISHED] i[0 51.5K 86.5K] o[0 51.5K 86.5K] splits[0/16/1] l_orderkey | l_partkey | l_suppkey | l_linenumber | l_quantity | l_extendedprice | l_discount | l_tax | l_returnflag | l_linestatus | l_commitdate | l_receiptdate | l_shipinstruct | l_shipmode | l_comment | l_shipdate 
 ------------+-----------+-----------+--------------+------------+-----------------+------------+-------+--------------+--------------+--------------+---------------+----------------+------------+-----------+------------
 (0 rows)
 
-Query 20240101_210116_00038_yu9vj, FINISHED, 2 nodes
+Query 20240107_222252_00017_qfbqi, FINISHED, 2 nodes
 Splits: 17 total, 17 done (100.00%)
-[Latency: client-side: 0:01, server-side: 0:01] [0 rows, 51.5KB] [0 rows/s, 77.1KB/s]
+[Latency: client-side: 0:01, server-side: 0:01] [0 rows, 51.5KB] [0 rows/s, 98.4KB/s]
 
 presto:tpch1g> 
-reportfilename: /tmp/test-splittable-splits.sh-bzm/report.xml
-tcpflow: listening on any
+"file:/dataset/1G_TPCH/lineitem/l_shipdate=1998-01-23/merged0.parquet,0:120142"
+"file:/dataset/1G_TPCH/lineitem/l_shipdate=1998-01-23/merged0.parquet,0:120142"
 presto:tpch1g> set session hive.max_initial_split_size='1024B'; 
 SET SESSION
 presto:tpch1g>   select * from lineitem where l_shipdate = '1998-01-23' and l_comment = 'itay';
- l_orderkey | l_partkey | l_suppkey | l_linenumber | l_quantity | l_extendedprice | l_discount | l_tax | l_returnflag | l_linestatus | l_commitdate | l_receiptdate | l_shipinstruct | l_shipmode | l_comment | l_shipdate 
+Query 20240107_222256_00021_qfbqi [RUNNING] i[0 1.88M 2.12M] o[0 1.88M 2.12M] splits[0/16/118] l_orderkey | l_partkey | l_suppkey | l_linenumber | l_quantity | l_extendedprice | l_discount | l_tax | l_returnflag | l_linestatus | l_commitdate | l_receiptdate | l_shipinstruct | l_shipmode | l_comment | l_shipdate 
 ------------+-----------+-----------+--------------+------------+-----------------+------------+-------+--------------+--------------+--------------+---------------+----------------+------------+-----------+------------
 (0 rows)
 
-Query 20240101_210120_00042_yu9vj, FINISHED, 3 nodes
+Query 20240107_222256_00021_qfbqi, FINISHED, 3 nodes
 Splits: 134 total, 134 done (100.00%)
-[Latency: client-side: 0:01, server-side: 449ms] [0 rows, 1.88MB] [0 rows/s, 4.18MB/s]
+[Latency: client-side: 0:01, server-side: 0:01] [0 rows, 1.88MB] [0 rows/s, 2.25MB/s]
 
 presto:tpch1g> 
 Worker0:
-parse error: Invalid numeric literal at line 1, column 65773
-"file:/dataset/1G_TPCH/lineitem/l_shipdate=1998-01-23/merged0.parquet,4096:1024"
-"file:/dataset/1G_TPCH/lineitem/l_shipdate=1998-01-23/merged0.parquet,5120:1024"
-"file:/dataset/1G_TPCH/lineitem/l_shipdate=1998-01-23/merged0.parquet,8192:1024"
-"file:/dataset/1G_TPCH/lineitem/l_shipdate=1998-01-23/merged0.parquet,11264:1024"
-"file:/dataset/1G_TPCH/lineitem/l_shipdate=1998-01-23/merged0.parquet,15360:1024"
-"file:/dataset/1G_TPCH/lineitem/l_shipdate=1998-01-23/merged0.parquet,17408:1024"
-"file:/dataset/1G_TPCH/lineitem/l_shipdate=1998-01-23/merged0.parquet,18432:1024"
-"file:/dataset/1G_TPCH/lineitem/l_shipdate=1998-01-23/merged0.parquet,22528:1024"
-"file:/dataset/1G_TPCH/lineitem/l_shipdate=1998-01-23/merged0.parquet,24576:1024"
-"file:/dataset/1G_TPCH/lineitem/l_shipdate=1998-01-23/merged0.parquet,32768:1024"
-"file:/dataset/1G_TPCH/lineitem/l_shipdate=1998-01-23/merged0.parquet,33792:1024"
-"file:/dataset/1G_TPCH/lineitem/l_shipdate=1998-01-23/merged0.parquet,38912:1024"
-"file:/dataset/1G_TPCH/lineitem/l_shipdate=1998-01-23/merged0.parquet,39936:1024"
-"file:/dataset/1G_TPCH/lineitem/l_shipdate=1998-01-23/merged0.parquet,40960:1024"
-"file:/dataset/1G_TPCH/lineitem/l_shipdate=1998-01-23/merged0.parquet,46080:1024"
-"file:/dataset/1G_TPCH/lineitem/l_shipdate=1998-01-23/merged0.parquet,49152:1024"
-"file:/dataset/1G_TPCH/lineitem/l_shipdate=1998-01-23/merged0.parquet,50176:1024"
-"file:/dataset/1G_TPCH/lineitem/l_shipdate=1998-01-23/merged0.parquet,51200:1024"
-"file:/dataset/1G_TPCH/lineitem/l_shipdate=1998-01-23/merged0.parquet,53248:1024"
-"file:/dataset/1G_TPCH/lineitem/l_shipdate=1998-01-23/merged0.parquet,54272:1024"
-"file:/dataset/1G_TPCH/lineitem/l_shipdate=1998-01-23/merged0.parquet,56320:1024"
-"file:/dataset/1G_TPCH/lineitem/l_shipdate=1998-01-23/merged0.parquet,57344:1024"
-"file:/dataset/1G_TPCH/lineitem/l_shipdate=1998-01-23/merged0.parquet,58368:1024"
-"file:/dataset/1G_TPCH/lineitem/l_shipdate=1998-01-23/merged0.parquet,59392:1024"
-"file:/dataset/1G_TPCH/lineitem/l_shipdate=1998-01-23/merged0.parquet,62464:1024"
-"file:/dataset/1G_TPCH/lineitem/l_shipdate=1998-01-23/merged0.parquet,63488:1024"
-"file:/dataset/1G_TPCH/lineitem/l_shipdate=1998-01-23/merged0.parquet,65536:1024"
-"file:/dataset/1G_TPCH/lineitem/l_shipdate=1998-01-23/merged0.parquet,72704:1024"
-"file:/dataset/1G_TPCH/lineitem/l_shipdate=1998-01-23/merged0.parquet,76800:1024"
-"file:/dataset/1G_TPCH/lineitem/l_shipdate=1998-01-23/merged0.parquet,78848:1024"
-"file:/dataset/1G_TPCH/lineitem/l_shipdate=1998-01-23/merged0.parquet,81920:1024"
-"file:/dataset/1G_TPCH/lineitem/l_shipdate=1998-01-23/merged0.parquet,97280:1024"
-"file:/dataset/1G_TPCH/lineitem/l_shipdate=1998-01-23/merged0.parquet,99328:1024"
-parse error: Invalid numeric literal at line 1, column 9578
-"file:/dataset/1G_TPCH/lineitem/l_shipdate=1998-01-23/merged0.parquet,102400:1024"
-"file:/dataset/1G_TPCH/lineitem/l_shipdate=1998-01-23/merged0.parquet,103424:1024"
-"file:/dataset/1G_TPCH/lineitem/l_shipdate=1998-01-23/merged0.parquet,106496:1024"
-"file:/dataset/1G_TPCH/lineitem/l_shipdate=1998-01-23/merged0.parquet,107520:1024"
-"file:/dataset/1G_TPCH/lineitem/l_shipdate=1998-01-23/merged0.parquet,113664:1024"
-"file:/dataset/1G_TPCH/lineitem/l_shipdate=1998-01-23/merged0.parquet,115712:1024"
-"file:/dataset/1G_TPCH/lineitem/l_shipdate=1998-01-23/merged0.parquet,116736:1024"
-Worker1:
-parse error: Invalid numeric literal at line 1, column 67024
 "file:/dataset/1G_TPCH/lineitem/l_shipdate=1998-01-23/merged0.parquet,0:1024"
 "file:/dataset/1G_TPCH/lineitem/l_shipdate=1998-01-23/merged0.parquet,1024:1024"
-"file:/dataset/1G_TPCH/lineitem/l_shipdate=1998-01-23/merged0.parquet,19456:1024"
-"file:/dataset/1G_TPCH/lineitem/l_shipdate=1998-01-23/merged0.parquet,20480:1024"
-"file:/dataset/1G_TPCH/lineitem/l_shipdate=1998-01-23/merged0.parquet,23552:1024"
-"file:/dataset/1G_TPCH/lineitem/l_shipdate=1998-01-23/merged0.parquet,27648:1024"
-"file:/dataset/1G_TPCH/lineitem/l_shipdate=1998-01-23/merged0.parquet,29696:1024"
+"file:/dataset/1G_TPCH/lineitem/l_shipdate=1998-01-23/merged0.parquet,2048:1024"
+"file:/dataset/1G_TPCH/lineitem/l_shipdate=1998-01-23/merged0.parquet,5120:1024"
+"file:/dataset/1G_TPCH/lineitem/l_shipdate=1998-01-23/merged0.parquet,6144:1024"
+"file:/dataset/1G_TPCH/lineitem/l_shipdate=1998-01-23/merged0.parquet,8192:1024"
+"file:/dataset/1G_TPCH/lineitem/l_shipdate=1998-01-23/merged0.parquet,9216:1024"
+"file:/dataset/1G_TPCH/lineitem/l_shipdate=1998-01-23/merged0.parquet,10240:1024"
+"file:/dataset/1G_TPCH/lineitem/l_shipdate=1998-01-23/merged0.parquet,11264:1024"
+"file:/dataset/1G_TPCH/lineitem/l_shipdate=1998-01-23/merged0.parquet,18432:1024"
+"file:/dataset/1G_TPCH/lineitem/l_shipdate=1998-01-23/merged0.parquet,21504:1024"
+"file:/dataset/1G_TPCH/lineitem/l_shipdate=1998-01-23/merged0.parquet,22528:1024"
+"file:/dataset/1G_TPCH/lineitem/l_shipdate=1998-01-23/merged0.parquet,24576:1024"
+"file:/dataset/1G_TPCH/lineitem/l_shipdate=1998-01-23/merged0.parquet,25600:1024"
 "file:/dataset/1G_TPCH/lineitem/l_shipdate=1998-01-23/merged0.parquet,30720:1024"
-"file:/dataset/1G_TPCH/lineitem/l_shipdate=1998-01-23/merged0.parquet,31744:1024"
-"file:/dataset/1G_TPCH/lineitem/l_shipdate=1998-01-23/merged0.parquet,36864:1024"
+"file:/dataset/1G_TPCH/lineitem/l_shipdate=1998-01-23/merged0.parquet,32768:1024"
+"file:/dataset/1G_TPCH/lineitem/l_shipdate=1998-01-23/merged0.parquet,34816:1024"
+"file:/dataset/1G_TPCH/lineitem/l_shipdate=1998-01-23/merged0.parquet,38912:1024"
+"file:/dataset/1G_TPCH/lineitem/l_shipdate=1998-01-23/merged0.parquet,40960:1024"
 "file:/dataset/1G_TPCH/lineitem/l_shipdate=1998-01-23/merged0.parquet,41984:1024"
 "file:/dataset/1G_TPCH/lineitem/l_shipdate=1998-01-23/merged0.parquet,43008:1024"
 "file:/dataset/1G_TPCH/lineitem/l_shipdate=1998-01-23/merged0.parquet,44032:1024"
-"file:/dataset/1G_TPCH/lineitem/l_shipdate=1998-01-23/merged0.parquet,45056:1024"
 "file:/dataset/1G_TPCH/lineitem/l_shipdate=1998-01-23/merged0.parquet,47104:1024"
 "file:/dataset/1G_TPCH/lineitem/l_shipdate=1998-01-23/merged0.parquet,48128:1024"
-"file:/dataset/1G_TPCH/lineitem/l_shipdate=1998-01-23/merged0.parquet,66560:1024"
-"file:/dataset/1G_TPCH/lineitem/l_shipdate=1998-01-23/merged0.parquet,69632:1024"
+"file:/dataset/1G_TPCH/lineitem/l_shipdate=1998-01-23/merged0.parquet,53248:1024"
+"file:/dataset/1G_TPCH/lineitem/l_shipdate=1998-01-23/merged0.parquet,56320:1024"
+"file:/dataset/1G_TPCH/lineitem/l_shipdate=1998-01-23/merged0.parquet,61440:1024"
+"file:/dataset/1G_TPCH/lineitem/l_shipdate=1998-01-23/merged0.parquet,65536:1024"
+"file:/dataset/1G_TPCH/lineitem/l_shipdate=1998-01-23/merged0.parquet,67584:1024"
 "file:/dataset/1G_TPCH/lineitem/l_shipdate=1998-01-23/merged0.parquet,71680:1024"
 "file:/dataset/1G_TPCH/lineitem/l_shipdate=1998-01-23/merged0.parquet,74752:1024"
-"file:/dataset/1G_TPCH/lineitem/l_shipdate=1998-01-23/merged0.parquet,77824:1024"
-"file:/dataset/1G_TPCH/lineitem/l_shipdate=1998-01-23/merged0.parquet,79872:1024"
 "file:/dataset/1G_TPCH/lineitem/l_shipdate=1998-01-23/merged0.parquet,83968:1024"
-"file:/dataset/1G_TPCH/lineitem/l_shipdate=1998-01-23/merged0.parquet,84992:1024"
-"file:/dataset/1G_TPCH/lineitem/l_shipdate=1998-01-23/merged0.parquet,86016:1024"
-"file:/dataset/1G_TPCH/lineitem/l_shipdate=1998-01-23/merged0.parquet,87040:1024"
 "file:/dataset/1G_TPCH/lineitem/l_shipdate=1998-01-23/merged0.parquet,90112:1024"
-"file:/dataset/1G_TPCH/lineitem/l_shipdate=1998-01-23/merged0.parquet,91136:1024"
-"file:/dataset/1G_TPCH/lineitem/l_shipdate=1998-01-23/merged0.parquet,92160:1024"
-"file:/dataset/1G_TPCH/lineitem/l_shipdate=1998-01-23/merged0.parquet,94208:1024"
-"file:/dataset/1G_TPCH/lineitem/l_shipdate=1998-01-23/merged0.parquet,95232:1024"
-"file:/dataset/1G_TPCH/lineitem/l_shipdate=1998-01-23/merged0.parquet,96256:1024"
-"file:/dataset/1G_TPCH/lineitem/l_shipdate=1998-01-23/merged0.parquet,98304:1024"
-"file:/dataset/1G_TPCH/lineitem/l_shipdate=1998-01-23/merged0.parquet,101376:1024"
+"file:/dataset/1G_TPCH/lineitem/l_shipdate=1998-01-23/merged0.parquet,106496:1024"
+"file:/dataset/1G_TPCH/lineitem/l_shipdate=1998-01-23/merged0.parquet,114688:1024"
+"file:/dataset/1G_TPCH/lineitem/l_shipdate=1998-01-23/merged0.parquet,115712:1024"
+"file:/dataset/1G_TPCH/lineitem/l_shipdate=1998-01-23/merged0.parquet,116736:1024"
+"file:/dataset/1G_TPCH/lineitem/l_shipdate=1998-01-23/merged0.parquet,117760:1024"
+"file:/dataset/1G_TPCH/lineitem/l_shipdate=1998-01-23/merged0.parquet,119463:679"
+Worker1:
+"file:/dataset/1G_TPCH/lineitem/l_shipdate=1998-01-23/merged0.parquet,102400:1024"
 "file:/dataset/1G_TPCH/lineitem/l_shipdate=1998-01-23/merged0.parquet,104448:1024"
 "file:/dataset/1G_TPCH/lineitem/l_shipdate=1998-01-23/merged0.parquet,105472:1024"
 "file:/dataset/1G_TPCH/lineitem/l_shipdate=1998-01-23/merged0.parquet,109568:1024"
 "file:/dataset/1G_TPCH/lineitem/l_shipdate=1998-01-23/merged0.parquet,111616:1024"
-"file:/dataset/1G_TPCH/lineitem/l_shipdate=1998-01-23/merged0.parquet,117760:1024"
+"file:/dataset/1G_TPCH/lineitem/l_shipdate=1998-01-23/merged0.parquet,113664:1024"
+"file:/dataset/1G_TPCH/lineitem/l_shipdate=1998-01-23/merged0.parquet,12288:1024"
+"file:/dataset/1G_TPCH/lineitem/l_shipdate=1998-01-23/merged0.parquet,13312:1024"
+"file:/dataset/1G_TPCH/lineitem/l_shipdate=1998-01-23/merged0.parquet,16384:1024"
+"file:/dataset/1G_TPCH/lineitem/l_shipdate=1998-01-23/merged0.parquet,17408:1024"
+"file:/dataset/1G_TPCH/lineitem/l_shipdate=1998-01-23/merged0.parquet,23552:1024"
+"file:/dataset/1G_TPCH/lineitem/l_shipdate=1998-01-23/merged0.parquet,26624:1024"
+"file:/dataset/1G_TPCH/lineitem/l_shipdate=1998-01-23/merged0.parquet,29696:1024"
+"file:/dataset/1G_TPCH/lineitem/l_shipdate=1998-01-23/merged0.parquet,31744:1024"
+"file:/dataset/1G_TPCH/lineitem/l_shipdate=1998-01-23/merged0.parquet,35840:1024"
+"file:/dataset/1G_TPCH/lineitem/l_shipdate=1998-01-23/merged0.parquet,39936:1024"
+"file:/dataset/1G_TPCH/lineitem/l_shipdate=1998-01-23/merged0.parquet,45056:1024"
+"file:/dataset/1G_TPCH/lineitem/l_shipdate=1998-01-23/merged0.parquet,50176:1024"
+"file:/dataset/1G_TPCH/lineitem/l_shipdate=1998-01-23/merged0.parquet,51200:1024"
+"file:/dataset/1G_TPCH/lineitem/l_shipdate=1998-01-23/merged0.parquet,55296:1024"
+"file:/dataset/1G_TPCH/lineitem/l_shipdate=1998-01-23/merged0.parquet,58368:1024"
+"file:/dataset/1G_TPCH/lineitem/l_shipdate=1998-01-23/merged0.parquet,66560:1024"
+"file:/dataset/1G_TPCH/lineitem/l_shipdate=1998-01-23/merged0.parquet,69632:1024"
+"file:/dataset/1G_TPCH/lineitem/l_shipdate=1998-01-23/merged0.parquet,70656:1024"
+"file:/dataset/1G_TPCH/lineitem/l_shipdate=1998-01-23/merged0.parquet,72704:1024"
+"file:/dataset/1G_TPCH/lineitem/l_shipdate=1998-01-23/merged0.parquet,76800:1024"
+"file:/dataset/1G_TPCH/lineitem/l_shipdate=1998-01-23/merged0.parquet,79872:1024"
+"file:/dataset/1G_TPCH/lineitem/l_shipdate=1998-01-23/merged0.parquet,81920:1024"
+"file:/dataset/1G_TPCH/lineitem/l_shipdate=1998-01-23/merged0.parquet,82944:1024"
+"file:/dataset/1G_TPCH/lineitem/l_shipdate=1998-01-23/merged0.parquet,84992:1024"
+"file:/dataset/1G_TPCH/lineitem/l_shipdate=1998-01-23/merged0.parquet,87040:1024"
+"file:/dataset/1G_TPCH/lineitem/l_shipdate=1998-01-23/merged0.parquet,89088:1024"
+"file:/dataset/1G_TPCH/lineitem/l_shipdate=1998-01-23/merged0.parquet,91136:1024"
+"file:/dataset/1G_TPCH/lineitem/l_shipdate=1998-01-23/merged0.parquet,93184:1024"
+"file:/dataset/1G_TPCH/lineitem/l_shipdate=1998-01-23/merged0.parquet,94208:1024"
+"file:/dataset/1G_TPCH/lineitem/l_shipdate=1998-01-23/merged0.parquet,95232:1024"
+"file:/dataset/1G_TPCH/lineitem/l_shipdate=1998-01-23/merged0.parquet,98304:1024"
+"file:/dataset/1G_TPCH/lineitem/l_shipdate=1998-01-23/merged0.parquet,99328:1024"
+"file:/dataset/1G_TPCH/lineitem/l_shipdate=1998-01-23/merged0.parquet,101376:1024"

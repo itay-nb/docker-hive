@@ -1,41 +1,39 @@
-Dec 31, 2023 2:25:46 PM org.jline.utils.Log logr
-WARNING: Unable to create a system terminal, creating a dumb terminal (enable debug logging for more information)
 "Trino version: 435
-Queued: 15.03ms, Analysis: 689.50ms, Planning: 1.50s, Execution: 5.60s
+Queued: 794.51ms, Analysis: 258.26ms, Planning: 482.10ms, Execution: 2.51s
 Fragment 1 [SINGLE]
-    CPU: 12.27ms, Scheduled: 74.18ms, Blocked 27.66s (Input: 24.57s, Output: 0.00ns), Input: 5 rows (45B); per task: avg.: 5.00 std.dev.: 0.00, Output: 1 row (9B)
+    CPU: 2.55ms, Scheduled: 2.61ms, Blocked 11.28s (Input: 10.02s, Output: 0.00ns), Input: 5 rows (45B); per task: avg.: 5.00 std.dev.: 0.00, Output: 1 row (9B)
     Output layout: [count]
     Output partitioning: SINGLE []
     Aggregate[type = FINAL]
     │   Layout: [count:bigint]
     │   Estimates: {rows: 1 (9B), cpu: 52.73k, memory: 9B, network: 0B}
-    │   CPU: 2.00ms (0.09%), Scheduled: 13.00ms (0.27%), Blocked: 0.00ns (0.00%), Output: 1 row (9B)
+    │   CPU: 0.00ns (0.00%), Scheduled: 0.00ns (0.00%), Blocked: 0.00ns (0.00%), Output: 1 row (9B)
     │   Input avg.: 5.00 rows, Input std.dev.: 0.00%
     │   count := count(""count_3"")
     └─ LocalExchange[partitioning = SINGLE]
        │   Layout: [count_3:bigint]
        │   Estimates: {rows: 6000 (52.73kB), cpu: 0, memory: 0B, network: 0B}
-       │   CPU: 0.00ns (0.00%), Scheduled: 2.00ms (0.04%), Blocked: 3.06s (4.83%), Output: 5 rows (45B)
+       │   CPU: 0.00ns (0.00%), Scheduled: 0.00ns (0.00%), Blocked: 1.25s (6.61%), Output: 5 rows (45B)
        │   Input avg.: 0.63 rows, Input std.dev.: 77.46%
        └─ RemoteSource[sourceFragmentIds = [2]]
               Layout: [count_3:bigint]
-              CPU: 1.00ms (0.05%), Scheduled: 6.00ms (0.12%), Blocked: 24.57s (38.81%), Output: 5 rows (45B)
+              CPU: 1.00ms (1.06%), Scheduled: 1.00ms (0.75%), Blocked: 10.02s (53.00%), Output: 5 rows (45B)
               Input avg.: 0.63 rows, Input std.dev.: 77.46%
 
 Fragment 2 [SOURCE]
-    CPU: 1.32s, Scheduled: 3.83s, Blocked 35.69s (Input: 24.97s, Output: 0.00ns), Input: 150002 rows (732.43kB); per task: avg.: 75001.00 std.dev.: 15059.00, Output: 5 rows (45B)
+    CPU: 91.87ms, Scheduled: 143.61ms, Blocked 7.63s (Input: 6.31s, Output: 0.00ns), Input: 150002 rows (732.43kB); per task: avg.: 75001.00 std.dev.: 14843.00, Output: 5 rows (45B)
     Output layout: [count_3]
     Output partitioning: SINGLE []
     Aggregate[type = PARTIAL]
     │   Layout: [count_3:bigint]
     │   Estimates: {rows: 6000 (52.73kB), cpu: ?, memory: ?, network: ?}
-    │   CPU: 14.00ms (0.64%), Scheduled: 27.00ms (0.56%), Blocked: 0.00ns (0.00%), Output: 5 rows (45B)
+    │   CPU: 4.00ms (4.26%), Scheduled: 4.00ms (3.01%), Blocked: 0.00ns (0.00%), Output: 5 rows (45B)
     │   Input avg.: 1195.00 rows, Input std.dev.: 3.66%
     │   count_3 := count(*)
     └─ InnerJoin[criteria = (""c_nationkey"" = ""n_nationkey""), distribution = REPLICATED]
        │   Layout: []
        │   Estimates: {rows: 6000 (0B), cpu: 732.44k, memory: 10B, network: 0B}
-       │   CPU: 230.00ms (10.56%), Scheduled: 405.00ms (8.38%), Blocked: 7.70s (12.16%), Output: 5975 rows (0B)
+       │   CPU: 43.00ms (45.74%), Scheduled: 62.00ms (46.62%), Blocked: 528.00ms (2.79%), Output: 5975 rows (0B)
        │   Left (probe) Input avg.: 30000.00 rows, Input std.dev.: 0.52%
        │   Right (build) Input avg.: 1.00 rows, Input std.dev.: 0.00%
        │   Distribution: REPLICATED
@@ -43,44 +41,42 @@ Fragment 2 [SOURCE]
        ├─ ScanFilter[table = hive:tpch1g:customer, dynamicFilters = {""c_nationkey"" = #df_487}]
        │      Layout: [c_nationkey:integer]
        │      Estimates: {rows: 150000 (732.42kB), cpu: 732.42k, memory: 0B, network: 0B}/{rows: 150000 (732.42kB), cpu: 732.42k, memory: 0B, network: 0B}
-       │      CPU: 1.05s (48.23%), Scheduled: 3.21s (66.36%), Blocked: 0.00ns (0.00%), Output: 150000 rows (732.42kB)
+       │      CPU: 42.00ms (44.68%), Scheduled: 59.00ms (44.36%), Blocked: 0.00ns (0.00%), Output: 150000 rows (732.42kB)
        │      Input avg.: 30000.00 rows, Input std.dev.: 0.52%
        │      c_nationkey := c_nationkey:int:REGULAR
        │      c_mktsegment:string:PARTITION_KEY
        │          :: [[AUTOMOBILE], [BUILDING], [FURNITURE], [HOUSEHOLD], [MACHINERY]]
-       │      Input: 150000 rows (732.42kB), Filtered: 0.00%, Physical input: 13.35MB, Physical input time: 199.30ms
+       │      Input: 150000 rows (732.42kB), Filtered: 0.00%, Physical input: 13.35MB, Physical input time: 38.22ms
        │      Dynamic filters: 
-       │          - df_487, [ SortedRangeSet[type=integer, ranges=1, {[17]}] ], collection time=2.96s
+       │          - df_487, [ SortedRangeSet[type=integer, ranges=1, {[17]}] ], collection time=1.43s
        └─ LocalExchange[partitioning = SINGLE]
           │   Layout: [n_nationkey:integer]
           │   Estimates: {rows: 1 (5B), cpu: 0, memory: 0B, network: 0B}
-          │   CPU: 4.00ms (0.18%), Scheduled: 80.00ms (1.66%), Blocked: 3.01s (4.75%), Output: 2 rows (10B)
+          │   CPU: 0.00ns (0.00%), Scheduled: 3.00ms (2.26%), Blocked: 792.00ms (4.19%), Output: 2 rows (10B)
           │   Input avg.: 0.13 rows, Input std.dev.: 264.58%
           └─ RemoteSource[sourceFragmentIds = [3]]
                  Layout: [n_nationkey:integer]
-                 CPU: 3.00ms (0.14%), Scheduled: 10.00ms (0.21%), Blocked: 24.97s (39.44%), Output: 2 rows (10B)
+                 CPU: 0.00ns (0.00%), Scheduled: 0.00ns (0.00%), Blocked: 6.31s (33.40%), Output: 2 rows (10B)
                  Input avg.: 0.13 rows, Input std.dev.: 264.58%
 
 Fragment 3 [SOURCE]
-    CPU: 875.20ms, Scheduled: 1.09s, Blocked 0.00ns (Input: 0.00ns, Output: 0.00ns), Input: 25 rows (448B); per task: avg.: 25.00 std.dev.: 0.00, Output: 1 row (5B)
+    CPU: 3.71ms, Scheduled: 3.94ms, Blocked 0.00ns (Input: 0.00ns, Output: 0.00ns), Input: 25 rows (448B); per task: avg.: 25.00 std.dev.: 0.00, Output: 1 row (5B)
     Output layout: [n_nationkey]
     Output partitioning: BROADCAST []
     ScanFilterProject[table = hive:tpch1g:nation, filterPredicate = (""n_name"" = VARCHAR 'PERU')]
         Layout: [n_nationkey:integer]
         Estimates: {rows: 25 (125B), cpu: 427, memory: 0B, network: 0B}/{rows: 1 (5B), cpu: 427, memory: 0B, network: 0B}/{rows: 1 (5B), cpu: 5, memory: 0B, network: 0B}
-        CPU: 874.00ms (40.11%), Scheduled: 1.08s (22.41%), Blocked: 0.00ns (0.00%), Output: 1 row (5B)
+        CPU: 4.00ms (4.26%), Scheduled: 4.00ms (3.01%), Blocked: 0.00ns (0.00%), Output: 1 row (5B)
         Input avg.: 25.00 rows, Input std.dev.: 0.00%
         n_nationkey := n_nationkey:int:REGULAR
         n_name := n_name:string:REGULAR
-        Input: 25 rows (448B), Filtered: 96.00%, Physical input: 3.41kB, Physical input time: 4.49ms
+        Input: 25 rows (448B), Filtered: 96.00%, Physical input: 3.41kB, Physical input time: 78.72us
 
 "
-Dec 31, 2023 2:26:11 PM org.jline.utils.Log logr
-WARNING: Unable to create a system terminal, creating a dumb terminal (enable debug logging for more information)
 "Trino version: 435
-Queued: 614.81us, Analysis: 129.60ms, Planning: 1.02s, Execution: 34.78s
+Queued: 452.04us, Analysis: 132.03ms, Planning: 619.10ms, Execution: 32.21s
 Fragment 1 [SINGLE]
-    CPU: 4.57ms, Scheduled: 21.68ms, Blocked 5.02m (Input: 4.46m, Output: 0.00ns), Input: 16 rows (144B); per task: avg.: 16.00 std.dev.: 0.00, Output: 1 row (9B)
+    CPU: 2.45ms, Scheduled: 7.56ms, Blocked 4.72m (Input: 4.19m, Output: 0.00ns), Input: 16 rows (144B); per task: avg.: 16.00 std.dev.: 0.00, Output: 1 row (9B)
     Output layout: [count]
     Output partitioning: SINGLE []
     Aggregate[type = FINAL]
@@ -92,258 +88,481 @@ Fragment 1 [SINGLE]
     └─ LocalExchange[partitioning = SINGLE]
        │   Layout: [count_4:bigint]
        │   Estimates: {rows: ? (?), cpu: 0, memory: 0B, network: 0B}
-       │   CPU: 0.00ns (0.00%), Scheduled: 0.00ns (0.00%), Blocked: 33.47s (1.89%), Output: 16 rows (144B)
-       │   Input avg.: 2.00 rows, Input std.dev.: 132.29%
+       │   CPU: 0.00ns (0.00%), Scheduled: 3.00ms (0.01%), Blocked: 31.43s (1.78%), Output: 16 rows (144B)
+       │   Input avg.: 2.00 rows, Input std.dev.: 154.11%
        └─ RemoteSource[sourceFragmentIds = [2]]
               Layout: [count_4:bigint]
-              CPU: 1.00ms (0.01%), Scheduled: 17.00ms (0.02%), Blocked: 4.46m (15.10%), Output: 16 rows (144B)
-              Input avg.: 2.00 rows, Input std.dev.: 132.29%
+              CPU: 1.00ms (0.02%), Scheduled: 3.00ms (0.01%), Blocked: 4.19m (14.26%), Output: 16 rows (144B)
+              Input avg.: 2.00 rows, Input std.dev.: 154.11%
 
 Fragment 2 [HASH]
-    CPU: 4.45s, Scheduled: 23.98s, Blocked 25.51m (Input: 15.63m, Output: 0.00ns), Input: 6039758 rows (51.84MB); per task: avg.: 3019879.00 std.dev.: 1057.00, Output: 16 rows (144B)
+    CPU: 728.39ms, Scheduled: 3.15s, Blocked 24.73m (Input: 16.35m, Output: 0.00ns), Input: 6039758 rows (51.84MB); per task: avg.: 3019879.00 std.dev.: 1057.00, Output: 16 rows (144B)
     Output layout: [count_4]
     Output partitioning: SINGLE []
     Aggregate[type = PARTIAL]
     │   Layout: [count_4:bigint]
-    │   CPU: 19.00ms (0.11%), Scheduled: 87.00ms (0.08%), Blocked: 0.00ns (0.00%), Output: 16 rows (144B)
-    │   Input avg.: 11772.00 rows, Input std.dev.: 34.46%
+    │   CPU: 11.00ms (0.21%), Scheduled: 204.00ms (1.00%), Blocked: 0.00ns (0.00%), Output: 16 rows (144B)
+    │   Input avg.: 11772.00 rows, Input std.dev.: 30.90%
     │   count_4 := count(*)
     └─ InnerJoin[criteria = (""l_orderkey"" = ""o_orderkey""), distribution = PARTITIONED]
        │   Layout: []
        │   Estimates: {rows: ? (0B), cpu: ?, memory: ?, network: 0B}
-       │   CPU: 4.30s (25.55%), Scheduled: 22.82s (20.35%), Blocked: 45.83s (2.59%), Output: 188352 rows (0B)
-       │   Left (probe) Input avg.: 375075.94 rows, Input std.dev.: 10.80%
+       │   CPU: 660.00ms (12.30%), Scheduled: 2.74s (13.44%), Blocked: 15.51s (0.88%), Output: 188352 rows (0B)
+       │   Left (probe) Input avg.: 375075.94 rows, Input std.dev.: 19.07%
        │   Right (build) Input avg.: 2408.94 rows, Input std.dev.: 2.36%
        │   Distribution: PARTITIONED
        │   dynamicFilterAssignments = {o_orderkey -> #df_491}
        ├─ RemoteSource[sourceFragmentIds = [3]]
        │      Layout: [l_orderkey:bigint]
-       │      CPU: 54.00ms (0.32%), Scheduled: 682.00ms (0.61%), Blocked: 8.50m (28.78%), Output: 6001215 rows (51.51MB)
-       │      Input avg.: 375075.94 rows, Input std.dev.: 10.80%
+       │      CPU: 32.00ms (0.60%), Scheduled: 157.00ms (0.77%), Blocked: 8.30m (28.24%), Output: 6001215 rows (51.51MB)
+       │      Input avg.: 375075.94 rows, Input std.dev.: 19.07%
        └─ LocalExchange[partitioning = HASH, arguments = [""o_orderkey""]]
           │   Layout: [o_orderkey:bigint]
           │   Estimates: {rows: ? (?), cpu: ?, memory: 0B, network: 0B}
-          │   CPU: 42.00ms (0.25%), Scheduled: 188.00ms (0.17%), Blocked: 8.12m (27.50%), Output: 38543 rows (338.76kB)
-          │   Input avg.: 2408.94 rows, Input std.dev.: 64.39%
+          │   CPU: 9.00ms (0.17%), Scheduled: 12.00ms (0.06%), Blocked: 8.06m (27.42%), Output: 38543 rows (338.76kB)
+          │   Input avg.: 2408.94 rows, Input std.dev.: 43.99%
           └─ RemoteSource[sourceFragmentIds = [4]]
                  Layout: [o_orderkey:bigint]
-                 CPU: 13.00ms (0.08%), Scheduled: 107.00ms (0.10%), Blocked: 7.13m (24.14%), Output: 38543 rows (338.76kB)
-                 Input avg.: 2408.94 rows, Input std.dev.: 64.39%
+                 CPU: 4.00ms (0.07%), Scheduled: 6.00ms (0.03%), Blocked: 8.06m (27.42%), Output: 38543 rows (338.76kB)
+                 Input avg.: 2408.94 rows, Input std.dev.: 43.99%
 
 Fragment 3 [SOURCE]
-    CPU: 6.69s, Scheduled: 48.37s, Blocked 0.00ns (Input: 0.00ns, Output: 0.00ns), Input: 6001215 rows (51.51MB); per task: avg.: 3000607.50 std.dev.: 13455.50, Output: 6001215 rows (51.51MB)
+    CPU: 2.72s, Scheduled: 12.21s, Blocked 0.00ns (Input: 0.00ns, Output: 0.00ns), Input: 6001215 rows (51.51MB); per task: avg.: 3000607.50 std.dev.: 9766.50, Output: 6001215 rows (51.51MB)
     Output layout: [l_orderkey]
     Output partitioning: HASH [l_orderkey]
     ScanFilter[table = hive:tpch1g:lineitem, dynamicFilters = {""l_orderkey"" = #df_491}]
         Layout: [l_orderkey:bigint]
         Estimates: {rows: ? (?), cpu: ?, memory: 0B, network: 0B}/{rows: ? (?), cpu: ?, memory: 0B, network: 0B}
-        CPU: 6.62s (39.30%), Scheduled: 48.05s (42.83%), Blocked: 0.00ns (0.00%), Output: 6001215 rows (51.51MB)
+        CPU: 2.70s (50.34%), Scheduled: 12.05s (59.19%), Blocked: 0.00ns (0.00%), Output: 6001215 rows (51.51MB)
         Input avg.: 2375.78 rows, Input std.dev.: 18.08%
         l_orderkey := l_orderkey:bigint:REGULAR
         l_shipdate:string:PARTITION_KEY
             :: [[1992-01-02, 1998-12-01]]
-        Input: 6001215 rows (51.51MB), Filtered: 0.00%, Physical input: 276.87MB, Physical input time: 20.20s
+        Input: 6001215 rows (51.51MB), Filtered: 0.00%, Physical input: 276.87MB, Physical input time: 1.32s
         Dynamic filters: 
-            - df_491, ALL, collection time=17.77s
+            - df_491, ALL, collection time=16.22s
 
 Fragment 4 [SOURCE]
-    CPU: 5.96s, Scheduled: 40.92s, Blocked 0.00ns (Input: 0.00ns, Output: 0.00ns), Input: 75116 rows (967.46kB); per task: avg.: 37558.00 std.dev.: 147.00, Output: 38543 rows (338.76kB)
+    CPU: 1.98s, Scheduled: 5.29s, Blocked 0.00ns (Input: 0.00ns, Output: 0.00ns), Input: 75116 rows (967.46kB); per task: avg.: 37558.00 std.dev.: 3395.00, Output: 38543 rows (338.76kB)
     Output layout: [o_orderkey]
     Output partitioning: HASH [o_orderkey]
     ScanFilterProject[table = hive:tpch1g:orders, filterPredicate = (""o_orderstatus"" = VARCHAR 'P')]
         Layout: [o_orderkey:bigint]
         Estimates: {rows: ? (?), cpu: ?, memory: 0B, network: 0B}/{rows: ? (?), cpu: ?, memory: 0B, network: 0B}/{rows: ? (?), cpu: ?, memory: 0B, network: 0B}
-        CPU: 5.79s (34.39%), Scheduled: 40.22s (35.85%), Blocked: 0.00ns (0.00%), Output: 38543 rows (338.76kB)
+        CPU: 1.95s (36.30%), Scheduled: 5.19s (25.48%), Blocked: 0.00ns (0.00%), Output: 38543 rows (338.76kB)
         Input avg.: 31.22 rows, Input std.dev.: 436.85%
         o_orderstatus := o_orderstatus:string:REGULAR
         o_orderkey := o_orderkey:bigint:REGULAR
         o_orderdate:string:PARTITION_KEY
             :: [[1992-01-01, 1998-08-02]]
-        Input: 75116 rows (967.46kB), Filtered: 48.69%, Physical input: 4.13MB, Physical input time: 1.25s
+        Input: 75116 rows (967.46kB), Filtered: 48.69%, Physical input: 4.13MB, Physical input time: 20.51ms
 
 "
-reportfilename: /tmp/test-dynamic-filters.sh-jJ6/report.xml
-tcpflow: listening on any
-Dec 31, 2023 2:26:49 PM org.jline.utils.Log logr
-WARNING: Unable to create a system terminal, creating a dumb terminal (enable debug logging for more information)
 "Trino version: 435
-Queued: 378.61us, Analysis: 140.25ms, Planning: 931.33ms, Execution: 33.22s
+Queued: 461.61us, Analysis: 131.54ms, Planning: 600.17ms, Execution: 32.36s
 Fragment 1 [SINGLE]
-    CPU: 3.65ms, Scheduled: 11.75ms, Blocked 4.80m (Input: 4.27m, Output: 0.00ns), Input: 16 rows (144B); per task: avg.: 16.00 std.dev.: 0.00, Output: 1 row (9B)
+    CPU: 4.29ms, Scheduled: 9.13ms, Blocked 4.73m (Input: 4.21m, Output: 0.00ns), Input: 16 rows (144B); per task: avg.: 16.00 std.dev.: 0.00, Output: 1 row (9B)
     Output layout: [count]
     Output partitioning: SINGLE []
     Aggregate[type = FINAL]
     │   Layout: [count:bigint]
     │   Estimates: {rows: 1 (9B), cpu: ?, memory: 9B, network: 0B}
-    │   CPU: 0.00ns (0.00%), Scheduled: 0.00ns (0.00%), Blocked: 0.00ns (0.00%), Output: 1 row (9B)
+    │   CPU: 0.00ns (0.00%), Scheduled: 3.00ms (0.01%), Blocked: 0.00ns (0.00%), Output: 1 row (9B)
     │   Input avg.: 16.00 rows, Input std.dev.: 0.00%
     │   count := count(""count_4"")
     └─ LocalExchange[partitioning = SINGLE]
        │   Layout: [count_4:bigint]
        │   Estimates: {rows: ? (?), cpu: 0, memory: 0B, network: 0B}
-       │   CPU: 0.00ns (0.00%), Scheduled: 0.00ns (0.00%), Blocked: 31.98s (1.81%), Output: 16 rows (144B)
-       │   Input avg.: 2.00 rows, Input std.dev.: 195.26%
+       │   CPU: 0.00ns (0.00%), Scheduled: 0.00ns (0.00%), Blocked: 31.55s (1.81%), Output: 16 rows (144B)
+       │   Input avg.: 2.00 rows, Input std.dev.: 82.92%
        └─ RemoteSource[sourceFragmentIds = [2]]
               Layout: [count_4:bigint]
-              CPU: 1.00ms (0.01%), Scheduled: 1.00ms (0.00%), Blocked: 4.27m (14.53%), Output: 16 rows (144B)
-              Input avg.: 2.00 rows, Input std.dev.: 195.26%
+              CPU: 1.00ms (0.01%), Scheduled: 1.00ms (0.00%), Blocked: 4.21m (14.47%), Output: 16 rows (144B)
+              Input avg.: 2.00 rows, Input std.dev.: 82.92%
 
 Fragment 2 [HASH]
-    CPU: 1.09s, Scheduled: 6.42s, Blocked 24.68m (Input: 16.17m, Output: 0.00ns), Input: 6002668 rows (51.52MB); per task: avg.: 3001334.00 std.dev.: 992.00, Output: 16 rows (144B)
+    CPU: 786.09ms, Scheduled: 4.17s, Blocked 24.60m (Input: 16.18m, Output: 0.00ns), Input: 6002668 rows (51.52MB); per task: avg.: 3001334.00 std.dev.: 992.00, Output: 16 rows (144B)
     Output layout: [count_4]
     Output partitioning: SINGLE []
     Aggregate[type = PARTIAL]
     │   Layout: [count_4:bigint]
-    │   CPU: 16.00ms (0.12%), Scheduled: 56.00ms (0.07%), Blocked: 0.00ns (0.00%), Output: 16 rows (144B)
-    │   Input avg.: 375.38 rows, Input std.dev.: 28.89%
+    │   CPU: 13.00ms (0.16%), Scheduled: 93.00ms (0.23%), Blocked: 0.00ns (0.00%), Output: 16 rows (144B)
+    │   Input avg.: 375.38 rows, Input std.dev.: 36.94%
     │   count_4 := count(*)
     └─ InnerJoin[criteria = (""l_orderkey"" = ""o_orderkey""), distribution = PARTITIONED]
        │   Layout: []
        │   Estimates: {rows: ? (0B), cpu: ?, memory: ?, network: 0B}
-       │   CPU: 948.00ms (6.83%), Scheduled: 5.70s (7.26%), Blocked: 37.25s (2.11%), Output: 6006 rows (0B)
-       │   Left (probe) Input avg.: 375075.94 rows, Input std.dev.: 28.04%
+       │   CPU: 678.00ms (8.25%), Scheduled: 3.24s (7.98%), Blocked: 14.60s (0.84%), Output: 6006 rows (0B)
+       │   Left (probe) Input avg.: 375075.94 rows, Input std.dev.: 37.43%
        │   Right (build) Input avg.: 90.81 rows, Input std.dev.: 11.15%
        │   Distribution: PARTITIONED
        │   dynamicFilterAssignments = {o_orderkey -> #df_491}
        ├─ RemoteSource[sourceFragmentIds = [3]]
        │      Layout: [l_orderkey:bigint]
-       │      CPU: 48.00ms (0.35%), Scheduled: 445.00ms (0.57%), Blocked: 8.38m (28.51%), Output: 6001215 rows (51.51MB)
-       │      Input avg.: 375075.94 rows, Input std.dev.: 28.04%
+       │      CPU: 41.00ms (0.50%), Scheduled: 596.00ms (1.47%), Blocked: 8.30m (28.52%), Output: 6001215 rows (51.51MB)
+       │      Input avg.: 375075.94 rows, Input std.dev.: 37.43%
        └─ LocalExchange[partitioning = HASH, arguments = [""o_orderkey""]]
           │   Layout: [o_orderkey:bigint]
           │   Estimates: {rows: ? (?), cpu: ?, memory: 0B, network: 0B}
-          │   CPU: 24.00ms (0.17%), Scheduled: 70.00ms (0.09%), Blocked: 7.80m (26.54%), Output: 1453 rows (12.77kB)
-          │   Input avg.: 90.81 rows, Input std.dev.: 67.38%
+          │   CPU: 19.00ms (0.23%), Scheduled: 65.00ms (0.16%), Blocked: 7.93m (27.25%), Output: 1453 rows (12.77kB)
+          │   Input avg.: 90.81 rows, Input std.dev.: 61.45%
           └─ RemoteSource[sourceFragmentIds = [4]]
                  Layout: [o_orderkey:bigint]
-                 CPU: 24.00ms (0.17%), Scheduled: 69.00ms (0.09%), Blocked: 7.79m (26.50%), Output: 1453 rows (12.77kB)
-                 Input avg.: 90.81 rows, Input std.dev.: 67.38%
+                 CPU: 11.00ms (0.13%), Scheduled: 14.00ms (0.03%), Blocked: 7.89m (27.11%), Output: 1453 rows (12.77kB)
+                 Input avg.: 90.81 rows, Input std.dev.: 61.45%
 
 Fragment 3 [SOURCE]
-    CPU: 8.17s, Scheduled: 53.41s, Blocked 0.00ns (Input: 0.00ns, Output: 0.00ns), Input: 6001215 rows (51.51MB); per task: avg.: 3000607.50 std.dev.: 54787.50, Output: 6001215 rows (51.51MB)
+    CPU: 4.29s, Scheduled: 27.53s, Blocked 0.00ns (Input: 0.00ns, Output: 0.00ns), Input: 6001215 rows (51.51MB); per task: avg.: 3000607.50 std.dev.: 49655.50, Output: 6001215 rows (51.51MB)
     Output layout: [l_orderkey]
     Output partitioning: HASH [l_orderkey]
     ScanFilter[table = hive:tpch1g:lineitem, dynamicFilters = {""l_orderkey"" = #df_491}]
         Layout: [l_orderkey:bigint]
         Estimates: {rows: ? (?), cpu: ?, memory: 0B, network: 0B}/{rows: ? (?), cpu: ?, memory: 0B, network: 0B}
-        CPU: 8.11s (58.44%), Scheduled: 52.84s (67.24%), Blocked: 0.00ns (0.00%), Output: 6001215 rows (51.51MB)
+        CPU: 4.26s (51.84%), Scheduled: 26.98s (66.43%), Blocked: 0.00ns (0.00%), Output: 6001215 rows (51.51MB)
         Input avg.: 2375.78 rows, Input std.dev.: 18.08%
         l_orderkey := l_orderkey:bigint:REGULAR
         l_shipdate:string:PARTITION_KEY
             :: [[1992-01-02, 1998-12-01]]
-        Input: 6001215 rows (51.51MB), Filtered: 0.00%, Physical input: 276.87MB, Physical input time: 3.12s
+        Input: 6001215 rows (51.51MB), Filtered: 0.00%, Physical input: 276.87MB, Physical input time: 3.64s
         Dynamic filters: 
-            - df_491, [ SortedRangeSet[type=bigint, ranges=44, {[6150], ..., [5997986]}] ], collection time=29.62s
+            - df_491, [ SortedRangeSet[type=bigint, ranges=44, {[6150], ..., [5997986]}] ], collection time=29.94s
 
 Fragment 4 [SOURCE]
-    CPU: 4.78s, Scheduled: 19.66s, Blocked 0.00ns (Input: 0.00ns, Output: 0.00ns), Input: 396073 rows (9.97MB); per task: avg.: 198036.50 std.dev.: 1786.50, Output: 1453 rows (12.77kB)
+    CPU: 3.22s, Scheduled: 9.69s, Blocked 0.00ns (Input: 0.00ns, Output: 0.00ns), Input: 396073 rows (9.97MB); per task: avg.: 198036.50 std.dev.: 1055.50, Output: 1453 rows (12.77kB)
     Output layout: [o_orderkey]
     Output partitioning: HASH [o_orderkey]
     ScanFilterProject[table = hive:tpch1g:orders, filterPredicate = (""o_clerk"" = VARCHAR 'Clerk#000000064')]
         Layout: [o_orderkey:bigint]
         Estimates: {rows: ? (?), cpu: ?, memory: 0B, network: 0B}/{rows: ? (?), cpu: ?, memory: 0B, network: 0B}/{rows: ? (?), cpu: ?, memory: 0B, network: 0B}
-        CPU: 4.71s (33.91%), Scheduled: 19.41s (24.69%), Blocked: 0.00ns (0.00%), Output: 1453 rows (12.77kB)
+        CPU: 3.19s (38.87%), Scheduled: 9.62s (23.69%), Blocked: 0.00ns (0.00%), Output: 1453 rows (12.77kB)
         Input avg.: 164.62 rows, Input std.dev.: 118.82%
         o_clerk := o_clerk:string:REGULAR
         o_orderkey := o_orderkey:bigint:REGULAR
         o_orderdate:string:PARTITION_KEY
             :: [[1992-01-01, 1998-08-02]]
-        Input: 396073 rows (9.97MB), Filtered: 99.63%, Physical input: 37.54MB, Physical input time: 423.81ms
+        Input: 396073 rows (9.97MB), Filtered: 99.63%, Physical input: 37.54MB, Physical input time: 279.17ms
 
 "
-parse error: Invalid numeric literal at line 1, column 9
-parse error: Invalid numeric literal at line 1, column 5
-parse error: Invalid numeric literal at line 1, column 4
-parse error: Invalid numeric literal at line 1, column 5
-parse error: Invalid numeric literal at line 1, column 5
-parse error: Invalid numeric literal at line 1, column 4
-parse error: Invalid numeric literal at line 1, column 4
-parse error: Invalid numeric literal at line 1, column 4
-parse error: Invalid numeric literal at line 1, column 4
-parse error: Invalid numeric literal at line 1, column 5
-parse error: Invalid numeric literal at line 1, column 4
-parse error: Invalid numeric literal at line 1, column 5
-parse error: Invalid numeric literal at line 1, column 9
-Dec 31, 2023 2:27:26 PM org.jline.utils.Log logr
-WARNING: Unable to create a system terminal, creating a dumb terminal (enable debug logging for more information)
-SET SESSION
+{
+  "df_491": {
+    "values": {
+      "@type": "sortable",
+      "type": "bigint",
+      "inclusive": [
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true
+      ],
+      "sortedRanges": "CgAAAExPTkdfQVJSQVkyAAAAAAYYAAAAAAAABhgAAAAAAABkKAAAAAAAAGQoAAAAAAAAIS8AAAAAAAAhLwAAAAAAAOdaAAAAAAAA51oAAAAAAACFcwAAAAAAAIVzAAAAAAAAhY4AAAAAAACFjgAAAAAAACPeAAAAAAAAI94AAAAAAAAk9AAAAAAAACT0AAAAAAAAZvwAAAAAAABm/AAAAAAAAAL/AAAAAAAAAv8AAAAAAADiFQEAAAAAAOIVAQAAAAAAIzgBAAAAAAAjOAEAAAAAAKdnAQAAAAAAp2cBAAAAAADEaQEAAAAAAEaSWQAAAAAAYbRZAAAAAABhtFkAAAAAACLqWQAAAAAAIupZAAAAAAAAGFoAAAAAAAAYWgAAAAAAYSFaAAAAAABhIVoAAAAAAMdPWgAAAAAAx09aAAAAAAAkbFoAAAAAACRsWgAAAAAABrxaAAAAAAAGvFoAAAAAAObFWgAAAAAA5sVaAAAAAADl51oAAAAAAOXnWgAAAAAAxPJaAAAAAADE8loAAAAAAKKFWwAAAAAAooVbAAAAAAA="
+    },
+    "nullAllowed": false
+  }
+}
+{
+  "df_491": {
+    "values": {
+      "@type": "sortable",
+      "type": "bigint",
+      "inclusive": [
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true
+      ],
+      "sortedRanges": "CgAAAExPTkdfQVJSQVkyAAAAAAYYAAAAAAAABhgAAAAAAABkKAAAAAAAAGQoAAAAAAAAIS8AAAAAAAAhLwAAAAAAAOdaAAAAAAAA51oAAAAAAACFcwAAAAAAAIVzAAAAAAAAhY4AAAAAAACFjgAAAAAAACPeAAAAAAAAI94AAAAAAAAk9AAAAAAAACT0AAAAAAAAZvwAAAAAAABm/AAAAAAAAAL/AAAAAAAAAv8AAAAAAADiFQEAAAAAAOIVAQAAAAAAIzgBAAAAAAAjOAEAAAAAAKdnAQAAAAAAp2cBAAAAAADEaQEAAAAAAEaSWQAAAAAAYbRZAAAAAABhtFkAAAAAACLqWQAAAAAAIupZAAAAAAAAGFoAAAAAAAAYWgAAAAAAYSFaAAAAAABhIVoAAAAAAMdPWgAAAAAAx09aAAAAAAAkbFoAAAAAACRsWgAAAAAABrxaAAAAAAAGvFoAAAAAAObFWgAAAAAA5sVaAAAAAADl51oAAAAAAOXnWgAAAAAAxPJaAAAAAADE8loAAAAAAKKFWwAAAAAAooVbAAAAAAA="
+    },
+    "nullAllowed": false
+  }
+}
+{
+  "df_491": {
+    "values": {
+      "@type": "sortable",
+      "type": "bigint",
+      "inclusive": [
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true
+      ],
+      "sortedRanges": "CgAAAExPTkdfQVJSQVkuAAAAAIB1AAAAAAAAgHUAAAAAAADAjgAAAAAAAMCOAAAAAAAAhJwAAAAAAACEnAAAAAAAAGWgAAAAAAAAZaAAAAAAAACh6gAAAAAAAKHqAAAAAAAAIwMBAAAAAAAjAwEAAAAAAKY8AQAAAAAAYqhYAAAAAADFA1kAAAAAAMUDWQAAAAAApChZAAAAAACkKFkAAAAAAGH0WQAAAAAAYfRZAAAAAACnB1oAAAAAAKcHWgAAAAAABg1aAAAAAAAGDVoAAAAAAIM0WgAAAAAAgzRaAAAAAADFQ1oAAAAAAMVDWgAAAAAAA3VaAAAAAAADdVoAAAAAAMSgWgAAAAAAxKBaAAAAAACFy1oAAAAAAIXLWgAAAAAApelaAAAAAACl6VoAAAAAAGAMWwAAAAAAYAxbAAAAAADnEVsAAAAAAOcRWwAAAAAAIjpbAAAAAAAiOlsAAAAAAGZdWwAAAAAAZl1bAAAAAADHg1sAAAAAAMeDWwAAAAAA"
+    },
+    "nullAllowed": false
+  }
+}
+{
+  "df_491": {
+    "values": {
+      "@type": "sortable",
+      "type": "bigint",
+      "inclusive": [
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true
+      ],
+      "sortedRanges": "CgAAAExPTkdfQVJSQVkuAAAAAIB1AAAAAAAAgHUAAAAAAADAjgAAAAAAAMCOAAAAAAAAhJwAAAAAAACEnAAAAAAAAGWgAAAAAAAAZaAAAAAAAACh6gAAAAAAAKHqAAAAAAAAIwMBAAAAAAAjAwEAAAAAAKY8AQAAAAAAYqhYAAAAAADFA1kAAAAAAMUDWQAAAAAApChZAAAAAACkKFkAAAAAAGH0WQAAAAAAYfRZAAAAAACnB1oAAAAAAKcHWgAAAAAABg1aAAAAAAAGDVoAAAAAAIM0WgAAAAAAgzRaAAAAAADFQ1oAAAAAAMVDWgAAAAAAA3VaAAAAAAADdVoAAAAAAMSgWgAAAAAAxKBaAAAAAACFy1oAAAAAAIXLWgAAAAAApelaAAAAAACl6VoAAAAAAGAMWwAAAAAAYAxbAAAAAADnEVsAAAAAAOcRWwAAAAAAIjpbAAAAAAAiOlsAAAAAAGZdWwAAAAAAZl1bAAAAAADHg1sAAAAAAMeDWwAAAAAA"
+    },
+    "nullAllowed": false
+  }
+}
+{}
+{}
+{}
+{}
+{}
+{}
 "Trino version: 435
-Queued: 291.79us, Analysis: 115.40ms, Planning: 495.86ms, Execution: 962.33ms
+Queued: 404.58us, Analysis: 127.64ms, Planning: 459.19ms, Execution: 867.44ms
 Fragment 1 [SINGLE]
-    CPU: 3.51ms, Scheduled: 5.73ms, Blocked 2.47s (Input: 2.07s, Output: 0.00ns), Input: 25 rows (225B); per task: avg.: 25.00 std.dev.: 0.00, Output: 1 row (9B)
+    CPU: 4.37ms, Scheduled: 9.35ms, Blocked 2.29s (Input: 2.03s, Output: 0.00ns), Input: 25 rows (225B); per task: avg.: 25.00 std.dev.: 0.00, Output: 1 row (9B)
     Output layout: [count]
     Output partitioning: SINGLE []
     Aggregate[type = FINAL]
     │   Layout: [count:bigint]
     │   Estimates: {rows: 1 (9B), cpu: ?, memory: 9B, network: 0B}
-    │   CPU: 0.00ns (0.00%), Scheduled: 0.00ns (0.00%), Blocked: 0.00ns (0.00%), Output: 1 row (9B)
+    │   CPU: 0.00ns (0.00%), Scheduled: 3.00ms (1.50%), Blocked: 0.00ns (0.00%), Output: 1 row (9B)
     │   Input avg.: 25.00 rows, Input std.dev.: 0.00%
     │   count := count(""count_3"")
     └─ LocalExchange[partitioning = SINGLE]
        │   Layout: [count_3:bigint]
        │   Estimates: {rows: ? (?), cpu: 0, memory: 0B, network: 0B}
-       │   CPU: 0.00ns (0.00%), Scheduled: 2.00ms (0.64%), Blocked: 264.00ms (4.91%), Output: 25 rows (225B)
-       │   Input avg.: 3.13 rows, Input std.dev.: 167.38%
+       │   CPU: 0.00ns (0.00%), Scheduled: 1.00ms (0.50%), Blocked: 260.00ms (9.94%), Output: 25 rows (225B)
+       │   Input avg.: 3.13 rows, Input std.dev.: 196.24%
        └─ RemoteSource[sourceFragmentIds = [2]]
               Layout: [count_3:bigint]
-              CPU: 1.00ms (1.79%), Scheduled: 1.00ms (0.32%), Blocked: 2.07s (38.50%), Output: 25 rows (225B)
-              Input avg.: 3.13 rows, Input std.dev.: 167.38%
+              CPU: 1.00ms (1.89%), Scheduled: 1.00ms (0.50%), Blocked: 2.03s (77.63%), Output: 25 rows (225B)
+              Input avg.: 3.13 rows, Input std.dev.: 196.24%
 
 Fragment 2 [SOURCE]
-    CPU: 51.07ms, Scheduled: 290.32ms, Blocked 3.08s (Input: 1.47s, Output: 0.00ns), Input: 10002 rows (1.11kB); per task: avg.: 5001.00 std.dev.: 226.00, Output: 25 rows (225B)
+    CPU: 48.69ms, Scheduled: 196.46ms, Blocked 357.41ms (Input: 195.88ms, Output: 0.00ns), Input: 10002 rows (1.11kB); per task: avg.: 5001.00 std.dev.: 126.00, Output: 25 rows (225B)
     Output layout: [count_3]
     Output partitioning: SINGLE []
     Aggregate[type = PARTIAL]
     │   Layout: [count_3:bigint]
-    │   CPU: 4.00ms (7.14%), Scheduled: 9.00ms (2.87%), Blocked: 0.00ns (0.00%), Output: 25 rows (225B)
+    │   CPU: 3.00ms (5.66%), Scheduled: 7.00ms (3.50%), Blocked: 0.00ns (0.00%), Output: 25 rows (225B)
     │   Input avg.: 16.04 rows, Input std.dev.: 489.90%
     │   count_3 := count(*)
     └─ InnerJoin[criteria = (""s_nationkey"" = ""n_nationkey""), distribution = REPLICATED]
        │   Layout: []
        │   Estimates: {rows: ? (0B), cpu: ?, memory: 10B, network: 0B}
-       │   CPU: 6.00ms (10.71%), Scheduled: 8.00ms (2.55%), Blocked: 1.38s (25.73%), Output: 401 rows (0B)
+       │   CPU: 6.00ms (11.32%), Scheduled: 24.00ms (12.00%), Blocked: 103.00ms (3.94%), Output: 401 rows (0B)
        │   Left (probe) Input avg.: 400.00 rows, Input std.dev.: 4.24%
        │   Right (build) Input avg.: 1.00 rows, Input std.dev.: 0.00%
        │   Distribution: REPLICATED
        ├─ TableScan[table = hive:tpch1g:supplier]
        │      Layout: [s_nationkey:integer]
        │      Estimates: {rows: ? (?), cpu: ?, memory: 0B, network: 0B}
-       │      CPU: 36.00ms (64.29%), Scheduled: 264.00ms (84.08%), Blocked: 0.00ns (0.00%), Output: 10000 rows (1.10kB)
+       │      CPU: 36.00ms (67.92%), Scheduled: 154.00ms (77.00%), Blocked: 0.00ns (0.00%), Output: 10000 rows (1.10kB)
        │      Input avg.: 400.00 rows, Input std.dev.: 4.24%
        │      s_nationkey := s_nationkey:int:PARTITION_KEY
        │          :: [[0], [1], [2], [3], [4], [5], [6], [7], [8], [9], [10], [11], [12], [13], [14], [15], [16], [17], [18], [19], [20], [21], [22], [23], [24]]
-       │      Input: 10000 rows (1.10kB), Physical input: 987.93kB, Physical input time: 193.97ms
+       │      Input: 10000 rows (1.10kB), Physical input: 987.93kB, Physical input time: 82.85ms
        └─ LocalExchange[partitioning = SINGLE]
           │   Layout: [n_nationkey:integer]
           │   Estimates: {rows: 1 (5B), cpu: 0, memory: 0B, network: 0B}
-          │   CPU: 0.00ns (0.00%), Scheduled: 0.00ns (0.00%), Blocked: 189.00ms (3.52%), Output: 2 rows (10B)
+          │   CPU: 0.00ns (0.00%), Scheduled: 0.00ns (0.00%), Blocked: 26.00ms (0.99%), Output: 2 rows (10B)
           │   Input avg.: 0.13 rows, Input std.dev.: 264.58%
           └─ RemoteSource[sourceFragmentIds = [3]]
                  Layout: [n_nationkey:integer]
-                 CPU: 0.00ns (0.00%), Scheduled: 0.00ns (0.00%), Blocked: 1.47s (27.34%), Output: 2 rows (10B)
+                 CPU: 0.00ns (0.00%), Scheduled: 0.00ns (0.00%), Blocked: 196.00ms (7.50%), Output: 2 rows (10B)
                  Input avg.: 0.13 rows, Input std.dev.: 264.58%
 
 Fragment 3 [SOURCE]
-    CPU: 9.27ms, Scheduled: 30.54ms, Blocked 0.00ns (Input: 0.00ns, Output: 0.00ns), Input: 25 rows (448B); per task: avg.: 25.00 std.dev.: 0.00, Output: 1 row (5B)
+    CPU: 7.16ms, Scheduled: 10.04ms, Blocked 0.00ns (Input: 0.00ns, Output: 0.00ns), Input: 25 rows (448B); per task: avg.: 25.00 std.dev.: 0.00, Output: 1 row (5B)
     Output layout: [n_nationkey]
     Output partitioning: BROADCAST []
     ScanFilterProject[table = hive:tpch1g:nation, filterPredicate = ((""n_name"" = VARCHAR 'RUSSIA') AND (""n_nationkey"" IN (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24)))]
         Layout: [n_nationkey:integer]
         Estimates: {rows: 25 (125B), cpu: 427, memory: 0B, network: 0B}/{rows: 1 (5B), cpu: 427, memory: 0B, network: 0B}/{rows: 1 (5B), cpu: 5, memory: 0B, network: 0B}
-        CPU: 9.00ms (16.07%), Scheduled: 30.00ms (9.55%), Blocked: 0.00ns (0.00%), Output: 1 row (5B)
+        CPU: 7.00ms (13.21%), Scheduled: 10.00ms (5.00%), Blocked: 0.00ns (0.00%), Output: 1 row (5B)
         Input avg.: 25.00 rows, Input std.dev.: 0.00%
         n_nationkey := n_nationkey:int:REGULAR
         n_name := n_name:string:REGULAR
-        Input: 25 rows (448B), Filtered: 96.00%, Physical input: 3.41kB, Physical input time: 202.52us
+        Input: 25 rows (448B), Filtered: 96.00%, Physical input: 3.41kB, Physical input time: 68.59us
 
 "
-Dec 31, 2023 2:27:29 PM org.jline.utils.Log logr
-WARNING: Unable to create a system terminal, creating a dumb terminal (enable debug logging for more information)
-SET SESSION
 "Trino version: 435
-Queued: 303.46us, Analysis: 130.69ms, Planning: 357.00ms, Execution: 833.37ms
+Queued: 368.52us, Analysis: 156.67ms, Planning: 388.75ms, Execution: 730.58ms
 Fragment 1 [SINGLE]
-    CPU: 2.77ms, Scheduled: 2.91ms, Blocked 2.47s (Input: 2.14s, Output: 0.00ns), Input: 25 rows (225B); per task: avg.: 25.00 std.dev.: 0.00, Output: 1 row (9B)
+    CPU: 2.01ms, Scheduled: 2.20ms, Blocked 1.83s (Input: 1.64s, Output: 0.00ns), Input: 25 rows (225B); per task: avg.: 25.00 std.dev.: 0.00, Output: 1 row (9B)
     Output layout: [count]
     Output partitioning: SINGLE []
     Aggregate[type = FINAL]
@@ -355,27 +574,27 @@ Fragment 1 [SINGLE]
     └─ LocalExchange[partitioning = SINGLE]
        │   Layout: [count_3:bigint]
        │   Estimates: {rows: ? (?), cpu: 0, memory: 0B, network: 0B}
-       │   CPU: 0.00ns (0.00%), Scheduled: 0.00ns (0.00%), Blocked: 282.00ms (4.39%), Output: 25 rows (225B)
-       │   Input avg.: 3.13 rows, Input std.dev.: 241.30%
+       │   CPU: 0.00ns (0.00%), Scheduled: 0.00ns (0.00%), Blocked: 193.00ms (4.84%), Output: 25 rows (225B)
+       │   Input avg.: 3.13 rows, Input std.dev.: 151.31%
        └─ RemoteSource[sourceFragmentIds = [2]]
               Layout: [count_3:bigint]
-              CPU: 1.00ms (4.35%), Scheduled: 1.00ms (2.63%), Blocked: 2.14s (33.28%), Output: 25 rows (225B)
-              Input avg.: 3.13 rows, Input std.dev.: 241.30%
+              CPU: 0.00ns (0.00%), Scheduled: 0.00ns (0.00%), Blocked: 1.64s (41.14%), Output: 25 rows (225B)
+              Input avg.: 3.13 rows, Input std.dev.: 151.31%
 
 Fragment 2 [SOURCE]
-    CPU: 20.93ms, Scheduled: 37.79ms, Blocked 4.82s (Input: 2.60s, Output: 0.00ns), Input: 403 rows (55B); per task: avg.: 201.50 std.dev.: 200.50, Output: 25 rows (225B)
+    CPU: 15.39ms, Scheduled: 37.23ms, Blocked 2.15s (Input: 1.52s, Output: 0.00ns), Input: 403 rows (55B); per task: avg.: 201.50 std.dev.: 200.50, Output: 25 rows (225B)
     Amount of input data processed by the workers for this stage might be skewed
     Output layout: [count_3]
     Output partitioning: SINGLE []
     Aggregate[type = PARTIAL]
     │   Layout: [count_3:bigint]
-    │   CPU: 2.00ms (8.70%), Scheduled: 4.00ms (10.53%), Blocked: 0.00ns (0.00%), Output: 25 rows (225B)
+    │   CPU: 2.00ms (14.29%), Scheduled: 2.00ms (5.88%), Blocked: 0.00ns (0.00%), Output: 25 rows (225B)
     │   Input avg.: 16.04 rows, Input std.dev.: 489.90%
     │   count_3 := count(*)
     └─ InnerJoin[criteria = (""s_nationkey"" = ""n_nationkey""), distribution = REPLICATED]
        │   Layout: []
        │   Estimates: {rows: ? (0B), cpu: ?, memory: 10B, network: 0B}
-       │   CPU: 6.00ms (26.09%), Scheduled: 11.00ms (28.95%), Blocked: 1.08s (16.82%), Output: 401 rows (0B)
+       │   CPU: 3.00ms (21.43%), Scheduled: 18.00ms (52.94%), Blocked: 447.00ms (11.21%), Output: 401 rows (0B)
        │   Left (probe) Input avg.: 16.04 rows, Input std.dev.: 489.90%
        │   Right (build) Input avg.: 1.00 rows, Input std.dev.: 0.00%
        │   Distribution: REPLICATED
@@ -383,34 +602,34 @@ Fragment 2 [SOURCE]
        ├─ ScanFilter[table = hive:tpch1g:supplier, dynamicFilters = {""s_nationkey"" = #df_552}]
        │      Layout: [s_nationkey:integer]
        │      Estimates: {rows: ? (?), cpu: ?, memory: 0B, network: 0B}/{rows: ? (?), cpu: ?, memory: 0B, network: 0B}
-       │      CPU: 7.00ms (30.43%), Scheduled: 15.00ms (39.47%), Blocked: 0.00ns (0.00%), Output: 401 rows (45B)
+       │      CPU: 6.00ms (42.86%), Scheduled: 11.00ms (32.35%), Blocked: 0.00ns (0.00%), Output: 401 rows (45B)
        │      Input avg.: 16.04 rows, Input std.dev.: 489.90%
        │      s_nationkey := s_nationkey:int:PARTITION_KEY
        │          :: [[0], [1], [2], [3], [4], [5], [6], [7], [8], [9], [10], [11], [12], [13], [14], [15], [16], [17], [18], [19], [20], [21], [22], [23], [24]]
-       │      Input: 401 rows (45B), Filtered: 0.00%, Physical input: 39.55kB, Physical input time: 124.66us
+       │      Input: 401 rows (45B), Filtered: 0.00%, Physical input: 39.55kB, Physical input time: 139.43us
        │      Dynamic filters: 
-       │          - df_552, [ SortedRangeSet[type=integer, ranges=1, {[22]}] ], collection time=316.23ms
+       │          - df_552, [ SortedRangeSet[type=integer, ranges=1, {[22]}] ], collection time=223.06ms
        └─ LocalExchange[partitioning = SINGLE]
           │   Layout: [n_nationkey:integer]
           │   Estimates: {rows: 1 (5B), cpu: 0, memory: 0B, network: 0B}
-          │   CPU: 0.00ns (0.00%), Scheduled: 0.00ns (0.00%), Blocked: 331.00ms (5.15%), Output: 2 rows (10B)
+          │   CPU: 0.00ns (0.00%), Scheduled: 0.00ns (0.00%), Blocked: 191.00ms (4.79%), Output: 2 rows (10B)
           │   Input avg.: 0.13 rows, Input std.dev.: 264.58%
           └─ RemoteSource[sourceFragmentIds = [3]]
                  Layout: [n_nationkey:integer]
-                 CPU: 0.00ns (0.00%), Scheduled: 0.00ns (0.00%), Blocked: 2.60s (40.37%), Output: 2 rows (10B)
+                 CPU: 0.00ns (0.00%), Scheduled: 0.00ns (0.00%), Blocked: 1.52s (38.01%), Output: 2 rows (10B)
                  Input avg.: 0.13 rows, Input std.dev.: 264.58%
 
 Fragment 3 [SOURCE]
-    CPU: 6.54ms, Scheduled: 7.11ms, Blocked 0.00ns (Input: 0.00ns, Output: 0.00ns), Input: 25 rows (448B); per task: avg.: 25.00 std.dev.: 0.00, Output: 1 row (5B)
+    CPU: 3.76ms, Scheduled: 3.83ms, Blocked 0.00ns (Input: 0.00ns, Output: 0.00ns), Input: 25 rows (448B); per task: avg.: 25.00 std.dev.: 0.00, Output: 1 row (5B)
     Output layout: [n_nationkey]
     Output partitioning: BROADCAST []
     ScanFilterProject[table = hive:tpch1g:nation, filterPredicate = ((""n_name"" = VARCHAR 'RUSSIA') AND (""n_nationkey"" IN (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24)))]
         Layout: [n_nationkey:integer]
         Estimates: {rows: 25 (125B), cpu: 427, memory: 0B, network: 0B}/{rows: 1 (5B), cpu: 427, memory: 0B, network: 0B}/{rows: 1 (5B), cpu: 5, memory: 0B, network: 0B}
-        CPU: 7.00ms (30.43%), Scheduled: 7.00ms (18.42%), Blocked: 0.00ns (0.00%), Output: 1 row (5B)
+        CPU: 3.00ms (21.43%), Scheduled: 3.00ms (8.82%), Blocked: 0.00ns (0.00%), Output: 1 row (5B)
         Input avg.: 25.00 rows, Input std.dev.: 0.00%
         n_nationkey := n_nationkey:int:REGULAR
         n_name := n_name:string:REGULAR
-        Input: 25 rows (448B), Filtered: 96.00%, Physical input: 3.41kB, Physical input time: 85.24us
+        Input: 25 rows (448B), Filtered: 96.00%, Physical input: 3.41kB, Physical input time: 75.13us
 
 "

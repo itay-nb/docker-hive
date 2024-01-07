@@ -48,16 +48,18 @@ EOF
 
 tmpdir="$(mktemp -d /tmp/$(basename $0)-XXX)"
 sudo tcpflow -o "$tmpdir" -i any -e http port $WORKER_PORT &
+pid=$!
 
 cat <<EOF | 
   explain analyze select count(*) from lineitem, orders where l_orderkey = o_orderkey and o_clerk = 'Clerk#000000064';
 EOF
   run | _grep "Dynamic filters:|- df_.*"
 
-kill %%
+sudo kill -INT $pid
+sleep 1
+sudo kill -9 $pid
 # the coordinator sends to the worker POST /v1/task/<taskid> with a body that contains 'dynamicFilterDomains'
-grep -l dynamicFilterDomains "$tmpdir"/* | xargs -n1 jq .dynamicFilterDomains
-
+grep --no-filename --only-matching "^{.*dynamicFilterDomains.*}$" "$tmpdir"/* | jq .dynamicFilterDomains
 
 # CASE: dynamic filter + partition pruning shows reduced scanned rows
 
